@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Atlantis Noyon — Restaurant Asiatique & Buffet</title>
+<meta name="description" content="Atlantis à Noyon : buffet asiatique convivial, sushis, wok, grillades. Ambiance lounge moderne pour familles et amis." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://i.guim.co.uk/img/media/11370c1faa0827c29220068f8f408c6a02b3777e/1352_554_5152_3092/master/5152.jpg?width=1200&quality=85&auto=format&fit=max&s=8937e8415cd5b391f4f769eee6baed96" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0a1426;
+    --bg-2: #0f1d36;
+    --card: #16264a;
+    --card-2: #1b2e57;
+    --fg: #eaf2ff;
+    --muted: #9fb3d1;
+    --border: rgba(160, 200, 255, 0.14);
+    --primary: #6fd6ea;
+    --primary-2: #b3ecf5;
+    --accent: #3aa9c6;
+    --deep: #050d1d;
+
+    --gradient-ocean: linear-gradient(180deg, #050d1d 0%, #0f1d36 50%, #18335a 100%);
+    --gradient-aurora: linear-gradient(135deg, #3aa9c6 0%, #6fd6ea 50%, #b3ecf5 100%);
+    --gradient-glow: radial-gradient(circle at 50% 0%, rgba(58,169,198,0.4), transparent 60%);
+
+    --shadow-glow: 0 0 60px -10px rgba(111,214,234,0.5);
+    --shadow-deep: 0 30px 80px -20px rgba(5,13,29,0.85);
+    --shadow-card: 0 10px 40px -10px rgba(5,13,29,0.6);
+
+    --font-display: "Cormorant Garamond", serif;
+    --font-sans: "Inter", system-ui, sans-serif;
+    --font-script: "Caveat", "Brush Script MT", cursive;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--fg);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; font-weight: 600; }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+
+  .container { max-width: 1200px; margin: 0 auto; }
+  .section { position: relative; padding: 8rem 1.5rem; }
+
+  /* Utilities */
+  .text-gradient {
+    background: var(--gradient-aurora);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .font-script { font-family: var(--font-script); }
+  .signature {
+    font-family: var(--font-script);
+    color: var(--primary);
+    display: inline-block;
+    transform: rotate(-3deg);
+  }
+  .glass {
+    background: rgba(22, 38, 74, 0.4);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid var(--border);
+  }
+  .glass-strong {
+    background: rgba(15, 29, 54, 0.7);
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    border: 1px solid rgba(160,200,255,0.18);
+  }
+  .muted { color: var(--muted); }
+
+  /* Caustics blobs */
+  .caustics {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .caustics .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.35;
+    animation: float 10s ease-in-out infinite;
+  }
+  .caustics .b1 { top: -20%; left: -10%; width: 50vh; height: 50vh; background: radial-gradient(circle, rgba(58,169,198,0.5), transparent 70%); }
+  .caustics .b2 { top: 30%; right: -15%; width: 45vh; height: 45vh; background: radial-gradient(circle, rgba(179,236,245,0.4), transparent 70%); animation-delay: 2s; }
+  .caustics .b3 { bottom: -10%; left: 30%; width: 40vh; height: 40vh; background: radial-gradient(circle, rgba(80,130,220,0.4), transparent 70%); animation-delay: 4s; }
+  @keyframes float {
+    0%, 100% { transform: translate(0,0); }
+    50% { transform: translate(20px, -30px); }
+  }
+
+  /* NAV */
+  header.nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 50;
+    padding: 1rem 1.5rem 0;
+  }
+  nav.bar {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(15, 29, 54, 0.7);
+    backdrop-filter: blur(24px) saturate(160%);
+    border: 1px solid rgba(160,200,255,0.18);
+    border-radius: 999px;
+    padding: 0.7rem 1.4rem;
+  }
+  .logo { display: flex; align-items: center; gap: 0.65rem; }
+  .logo .dot {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--gradient-aurora);
+    box-shadow: var(--shadow-glow);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--deep);
+  }
+  .logo .name { font-family: var(--font-script); font-size: 1.85rem; color: var(--fg); line-height: 1; }
+  .nav-links { display: flex; gap: 1.8rem; }
+  .nav-links a { font-size: 0.92rem; color: var(--muted); transition: color .2s; }
+  .nav-links a:hover { color: var(--fg); }
+  .nav-cta {
+    background: var(--gradient-aurora);
+    color: var(--deep) !important;
+    font-weight: 600;
+    padding: 0.55rem 1.3rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    transition: box-shadow .2s, transform .2s;
+  }
+  .nav-cta:hover { box-shadow: var(--shadow-glow); transform: translateY(-1px); }
+  @media (max-width: 768px) { .nav-links { display: none; } }
+
+  /* HERO */
+  #hero {
+    position: relative; min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    background: var(--gradient-ocean);
+  }
+ #hero .hero-img {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(10,20,38,0.45) 0%,
+      rgba(10,20,38,0.65) 50%,
+      var(--bg) 100%
+    ),
+    url('https://i.guim.co.uk/img/media/11370c1faa0827c29220068f8f408c6a02b3777e/1352_554_5152_3092/master/5152.jpg?width=1200&quality=85&auto=format&fit=max&s=8937e8415cd5b391f4f769eee6baed96');
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+  .hero-content {
+    position: relative; z-index: 2;
+    text-align: center; padding: 0 1rem;
+    max-width: 880px;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(22,38,74,0.4);
+    border: 1px solid var(--border);
+    color: var(--primary);
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    padding: 0.45rem 1rem; border-radius: 999px;
+    margin-bottom: 1.5rem;
+  }
+  .badge .pulse {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--primary);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+  .hero-sign {
+    font-family: var(--font-script);
+    color: var(--primary);
+    font-size: clamp(2.2rem, 4vw, 3rem);
+    transform: rotate(-4deg);
+    display: inline-block;
+    margin-bottom: -0.5rem;
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    line-height: 1.05;
+    font-weight: 600;
+  }
+  .hero-title em { font-style: italic; background: var(--gradient-aurora); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: clamp(1rem, 1.6vw, 1.25rem);
+    color: var(--muted);
+    max-width: 600px; margin-left: auto; margin-right: auto;
+    line-height: 1.6;
+  }
+  .hero-actions {
+    margin-top: 2.5rem;
+    display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center;
+  }
+  .btn-primary {
+    background: var(--gradient-aurora);
+    color: var(--deep);
+    font-weight: 700;
+    padding: 1rem 1.8rem;
+    border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    transition: box-shadow .2s, transform .2s;
+    border: none; cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+  }
+  .btn-primary:hover { box-shadow: var(--shadow-glow); transform: translateY(-2px); }
+  .btn-ghost {
+    background: rgba(15,29,54,0.7);
+    border: 1px solid rgba(160,200,255,0.18);
+    color: var(--fg);
+    font-weight: 500;
+    padding: 1rem 1.8rem;
+    border-radius: 999px;
+    transition: background .2s;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+  }
+  .btn-ghost:hover { background: rgba(22,38,74,0.6); }
+
+  .hero-meta {
+    margin-top: 3rem;
+    display: flex; gap: 1.5rem; justify-content: center; align-items: center;
+    color: var(--muted); font-size: 0.9rem; flex-wrap: wrap;
+  }
+  .stars { color: var(--primary); letter-spacing: 2px; }
+  .divider-v { width: 1px; height: 14px; background: var(--border); }
+
+  .scroll-hint {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    color: rgba(179,236,245,0.6);
+    font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+    animation: bob 2s ease-in-out infinite;
+    z-index: 2;
+  }
+  @keyframes bob {
+    0%,100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(10px); }
+  }
+
+  /* Section header */
+  .section-head { text-align: center; max-width: 720px; margin: 0 auto 3.5rem; }
+  .eyebrow {
+    display: inline-block;
+    color: var(--primary);
+    font-size: 0.78rem; letter-spacing: 0.3em; text-transform: uppercase;
+  }
+  .section-head .signature { display: block; margin-top: 0.6rem; font-size: clamp(1.8rem, 3vw, 2.4rem); }
+  .section-title {
+    margin-top: 0.6rem;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    line-height: 1.1;
+  }
+  .section-title em { font-style: italic; background: var(--gradient-aurora); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .section-desc { margin-top: 1.2rem; color: var(--muted); font-size: 1.05rem; line-height: 1.7; }
+
+  /* ABOUT stats */
+  .stats {
+    margin-top: 4rem;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
+  }
+  .stat {
+    background: rgba(22,38,74,0.4);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 1.6rem 1rem;
+    text-align: center;
+    transition: box-shadow .3s;
+  }
+  .stat:hover { box-shadow: var(--shadow-glow); }
+  .stat .v {
+    font-family: var(--font-display);
+    font-size: 2.2rem; font-weight: 600;
+    background: var(--gradient-aurora);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .stat .l { color: var(--muted); font-size: 0.85rem; margin-top: 0.25rem; }
+  @media (max-width: 640px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+
+  /* SPECIALTIES */
+  .spec-head {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    gap: 2rem; margin-bottom: 3rem; flex-wrap: wrap;
+  }
+  .spec-head h2 { font-size: clamp(2rem, 4.5vw, 3rem); max-width: 520px; }
+  .spec-head p { max-width: 380px; color: var(--muted); }
+  .grid-cards {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem;
+  }
+  @media (max-width: 1024px) { .grid-cards { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .grid-cards { grid-template-columns: 1fr; } }
+  .card {
+    background: rgba(15,29,54,0.7);
+    border: 1px solid rgba(160,200,255,0.12);
+    border-radius: 24px;
+    overflow: hidden;
+    transition: transform .3s, box-shadow .3s, border-color .3s;
+  }
+  .card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(111,214,234,0.35);
+    box-shadow: var(--shadow-glow);
+  }
+  .card .img {
+    aspect-ratio: 4/5;
+    background-size: cover; background-position: center;
+    position: relative;
+  }
+  .card .img::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(15,29,54,0.95), transparent 60%);
+  }
+  .card .badge-ic {
+    position: absolute; top: 1rem; left: 1rem; z-index: 1;
+    width: 36px; height: 36px; border-radius: 999px;
+    background: rgba(22,38,74,0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--primary);
+  }
+  .card .body { padding: 1.2rem 1.3rem 1.5rem; }
+  .card h3 { font-size: 1.25rem; margin-bottom: 0.4rem; }
+  .card p { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
+
+  /* CONVIVIAL */
+  .conv-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+  @media (max-width: 900px) { .conv-grid { grid-template-columns: 1fr; gap: 3rem; } }
+  .conv-img {
+    position: relative;
+    aspect-ratio: 4/5;
+    border-radius: 32px;
+    overflow: hidden;
+    background-size: cover; background-position: center;
+    background-image: url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAHcCFnzLeEMMDZ5qia8hUPBESkmM2X-cbj2nNfNN6CaSumSCM6j1jcigyTwo70FsLLhlvS5XPcdgLyAf-XIBl7WZi4WyDmOXguPYpCxoCTobsMTw-xcDDp4A23uHL7CYx3N94UZ=s1360-w1360-h1020');
+    box-shadow: var(--shadow-deep);
+  }
+  .conv-img::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top right, rgba(5,13,29,0.6), transparent, rgba(111,214,234,0.1));
+  }
+  .conv-img .tag {
+    position: absolute; bottom: 1.5rem; left: 1.5rem; right: 1.5rem;
+    background: rgba(15,29,54,0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(160,200,255,0.18);
+    border-radius: 18px;
+    padding: 1.1rem 1.2rem;
+    z-index: 1;
+  }
+  .conv-img .tag .sign {
+    font-family: var(--font-script);
+    color: var(--primary);
+    font-size: 1.5rem;
+    display: block;
+    margin-bottom: 0.2rem;
+    transform: rotate(-2deg);
+  }
+  .conv-img .tag p { font-size: 0.85rem; color: var(--muted); }
+
+  .features { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1.1rem; }
+  .feature {
+    display: flex; gap: 1rem;
+    background: rgba(22,38,74,0.4);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 1.1rem 1.3rem;
+    transition: background .2s;
+  }
+  .feature:hover { background: rgba(22,38,74,0.65); }
+  .feature .ic {
+    width: 46px; height: 46px;
+    border-radius: 14px;
+    background: var(--gradient-aurora);
+    color: var(--deep);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    box-shadow: var(--shadow-glow);
+  }
+  .feature h3 { font-family: var(--font-sans); font-size: 1.05rem; font-weight: 600; }
+  .feature p { color: var(--muted); font-size: 0.85rem; line-height: 1.55; margin-top: 0.2rem; }
+
+  /* GALLERY */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 220px;
+    gap: 0.8rem;
+  }
+  .gallery .g {
+    background-size: cover; background-position: center;
+    border-radius: 22px;
+    box-shadow: var(--shadow-card);
+    transition: transform .4s;
+    position: relative; overflow: hidden;
+  }
+  .gallery .g:hover { transform: scale(1.02); }
+  .gallery .g:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+  @media (max-width: 768px) {
+    .gallery { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 180px; }
+    .gallery .g:nth-child(1) { grid-column: span 2; grid-row: span 1; }
+  }
+
+  /* REVIEWS */
+  .reviews {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem;
+  }
+  @media (max-width: 900px) { .reviews { grid-template-columns: 1fr; } }
+  .review {
+    background: rgba(15,29,54,0.7);
+    border: 1px solid rgba(160,200,255,0.12);
+    border-radius: 24px;
+    padding: 1.8rem;
+    transition: box-shadow .3s, border-color .3s;
+  }
+  .review:hover { border-color: rgba(111,214,234,0.35); box-shadow: var(--shadow-glow); }
+  .review .stars { margin-bottom: 1rem; font-size: 1rem; }
+  .review p { color: rgba(234,242,255,0.9); line-height: 1.65; }
+  .review .who {
+    margin-top: 1.4rem; padding-top: 1.4rem;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .review .avatar {
+    width: 40px; height: 40px; border-radius: 999px;
+    background: var(--gradient-aurora);
+    color: var(--deep);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+  }
+  .review .who .n { font-weight: 500; }
+  .review .who .s { color: var(--muted); font-size: 0.75rem; }
+
+  /* RESERVATION */
+  .resa-card {
+    max-width: 800px; margin: 0 auto;
+    background: rgba(15,29,54,0.7);
+    border: 1px solid rgba(160,200,255,0.18);
+    border-radius: 36px;
+    padding: 3.5rem 2rem;
+    text-align: center;
+    position: relative; overflow: hidden;
+    box-shadow: var(--shadow-deep);
+  }
+  .resa-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: var(--gradient-glow); opacity: 0.5;
+    pointer-events: none;
+  }
+  .resa-card > * { position: relative; }
+  .resa-card .signature { font-size: 2rem; margin-top: 0.8rem; }
+  .resa-card h2 { font-size: clamp(2rem, 4.5vw, 3rem); margin-top: 0.4rem; }
+
+  /* FOOTER */
+  footer {
+    background: rgba(5,13,29,0.6);
+    border-top: 1px solid var(--border);
+    padding: 5rem 1.5rem 2.5rem;
+  }
+  .foot-grid {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1.2fr 1fr 1fr 1.2fr;
+    gap: 2.5rem;
+  }
+  @media (max-width: 900px) { .foot-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .foot-grid { grid-template-columns: 1fr; } }
+  .foot-grid h3 {
+    font-family: var(--font-sans);
+    font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em;
+    color: var(--primary); font-weight: 600;
+  }
+  .foot-grid p, .foot-grid a { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+  .foot-grid a:hover { color: var(--fg); }
+  .foot-grid .col > * + * { margin-top: 0.8rem; }
+  .foot-logo { display: flex; align-items: center; gap: 0.6rem; }
+  .foot-logo .name { font-family: var(--font-script); font-size: 2.2rem; }
+  .map-wrap {
+    border-radius: 16px; overflow: hidden;
+    border: 1px solid var(--border);
+    aspect-ratio: 4/3;
+    margin-top: 1rem;
+  }
+  .map-wrap iframe { width: 100%; height: 100%; border: 0; filter: hue-rotate(180deg) invert(0.9) contrast(0.9); }
+  .copy {
+    margin-top: 3.5rem; padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    text-align: center; color: var(--muted); font-size: 0.8rem;
+  }
+  .copy .signature { font-size: 1.2rem; }
+
+  /* Reveal animation */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform .8s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .section { padding: 5rem 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <nav class="bar">
+    <a href="#hero" class="logo">
+      <span class="dot">
+        <!-- waves icon -->
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></svg>
+      </span>
+      <span class="name">Atlantis</span>
+    </a>
+    <div class="nav-links">
+      <a href="#about">Restaurant</a>
+      <a href="#menu">Menu</a>
+      <a href="#gallery">Galerie</a>
+      <a href="#reviews">Avis</a>
+    </div>
+    <a href="#reservation" class="nav-cta">Réserver</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-img"></div>
+  <div class="caustics"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
+  <div class="hero-content">
+    <div class="badge"><span class="pulse"></span> Restaurant asiatique · Noyon</div>
+    <span class="hero-sign">Atlantis</span>
+    <h1 class="hero-title">L'art de partager<br/><em>à la même table</em></h1>
+    <p class="hero-sub">Buffet chinois premium · Sushis · Wok · Grillades.<br/>Un festin pour toute la famille, à Noyon.</p>
+    <div class="hero-actions">
+      <a href="#reservation" class="btn-primary">Réserver ma table →</a>
+      <a href="#menu" class="btn-ghost">Voir le menu</a>
+    </div>
+    <div class="hero-meta">
+      <span class="stars">★★★★☆</span>
+      <strong>4,2/5</strong>
+      <span class="divider-v"></span>
+      <span>Familles & groupes bienvenus</span>
+    </div>
+  </div>
+  <div class="scroll-hint">↓ Découvrir</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section">
+  <div class="caustics"><span class="blob b1"></span><span class="blob b2"></span></div>
+  <div class="container" style="position:relative;">
+    <div class="section-head reveal">
+      <span class="eyebrow">Nos spécialités</span>
+      <span class="signature">la maison Atlantis</span>
+      <h2 class="section-title">Un voyage culinaire<br/>au cœur de <em>l'Asie</em></h2>
+      <p class="section-desc">Au cœur de Noyon, on vous accueille dans un espace vaste et lumineux, pensé pour les familles, les anniversaires et les grands repas entre amis. Des saveurs authentiques, une générosité sans limites. Chaque plat est une invitation au voyage et au partage.</p>
+    </div>
+    <div class="stats reveal">
+      <div class="stat"><div class="v">150+</div><div class="l">Places assises</div></div>
+      <div class="stat"><div class="v">80</div><div class="l">Spécialités buffet</div></div>
+      <div class="stat"><div class="v">4,2</div><div class="l">Note Google</div></div>
+      <div class="stat"><div class="v">10+</div><div class="l">Années à Noyon</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SPECIALTIES -->
+<section id="menu" class="section" style="background: var(--bg-2);">
+  <div class="container">
+    <div class="spec-head reveal">
+      <div>
+        <span class="eyebrow">Buffet & spécialités</span>
+        <span class="signature" style="display:block; margin-top:.5rem; font-size:1.8rem;">à volonté chez Atlantis</span>
+        <h2 style="margin-top:.6rem;">Un buffet aussi vaste<br/>qu'un <em style="font-style:italic; background: var(--gradient-aurora); -webkit-background-clip:text; background-clip:text; color:transparent;">océan</em></h2>
+      </div>
+      <p>Plus de 80 plats préparés chaque jour — sushis, dim sum, grillades teppanyaki, wok minute et desserts asiatiques.</p>
+    </div>
+
+    <div class="grid-cards reveal">
+      <article class="card">
+        <div class="img" style="background-image:url('https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=800&q=80');">
+          <span class="badge-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s2.5-7 10-7c4.5 0 7 3 7 3l3-2v12l-3-2s-2.5 3-7 3c-7.5 0-10-7-10-7z"/><circle cx="17" cy="11" r="1" fill="currentColor"/></svg></span>
+        </div>
+        <div class="body">
+          <h3>Sushis & Makis frais</h3>
+          <p>Confectionnés devant vous, fraîcheur et authenticité. Saumon, thon, avocat, crevettes…</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="img" style="background-image:url('https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80');">
+          <span class="badge-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.4-.7-2-1.5-3-.9-1-1.5-2-1.5-3 0-1.4 1.1-2.5 2.5-2.5S13 4.6 13 6c0 1.4-.7 2-1.5 3-.9 1-1.5 2-1.5 3a2.5 2.5 0 002.5 2.5"/><path d="M14 14.5c0 3-2.5 5.5-6 5.5s-6-2.5-6-5.5"/></svg></span>
+        </div>
+        <div class="body">
+          <h3>Wok & sautés</h3>
+          <p>Le crépitement du wok, les légumes croquants, les sauces parfumées. La cuisine vivante.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="img" style="background-image:url('https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=800&q=80');">
+          <span class="badge-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></svg></span>
+        </div>
+        <div class="body">
+          <h3>Fruits de mer</h3>
+          <p>Crevettes grillées, calamars, moules à l'asiatique, généreusement servis.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="img" style="background-image:url('https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=800&q=80');">
+          <span class="badge-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21a9 9 0 009-9H3a9 9 0 009 9z"/><path d="M7 21h10"/><path d="M19.5 12 22 6l-2.5-3-2.5 3 2.5 6z"/></svg></span>
+        </div>
+        <div class="body">
+          <h3>Nouilles & vapeur</h3>
+          <p>Dim sum délicats, raviolis vapeur, soupes parfumées et nouilles sautées.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CONVIVIAL -->
+<section class="section">
+  <div class="caustics"><span class="blob b3"></span></div>
+  <div class="container" style="position:relative;">
+    <div class="conv-grid">
+      <div class="conv-img reveal">
+        <div class="tag">
+          <span class="sign">on se retrouve ici</span>
+          <p>Des centaines de moments partagés chaque mois</p>
+        </div>
+      </div>
+      <div class="reveal">
+        <span class="eyebrow">L'expérience Atlantis</span>
+        <span class="signature" style="display:block; margin-top:.5rem; font-size:1.8rem;">plus qu'un repas</span>
+        <h2 style="margin-top:.6rem; font-size: clamp(2rem, 4.5vw, 3rem);">Un <em style="font-style:italic; background: var(--gradient-aurora); -webkit-background-clip:text; background-clip:text; color:transparent;">moment de vie</em></h2>
+        <p style="margin-top:1rem; color: var(--muted); line-height:1.65;">Chez Atlantis, on ne vient pas juste manger. On vient rire, partager, revenir. C'est ça, l'esprit de notre maison.</p>
+
+        <div class="features">
+          <div class="feature">
+            <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+            <div><h3>Idéal en famille</h3><p>Espace généreux, menu adapté aux enfants, atmosphère détendue. Tout le monde trouve son bonheur à notre table.</p></div>
+          </div>
+          <div class="feature">
+            <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11h18"/><path d="M5 11V7a7 7 0 0114 0v4"/><path d="M5 11v6a4 4 0 004 4h6a4 4 0 004-4v-6"/></svg></div>
+            <div><h3>Buffet à volonté premium</h3><p>Plus de 80 plats renouvelés en permanence. Sushis, wok, grillades, desserts… mangez sans compter.</p></div>
+          </div>
+          <div class="feature">
+            <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg></div>
+            <div><h3>Anniversaires & groupes</h3><p>Organisez vos événements chez nous. Privatisation possible pour vos fêtes entre amis ou repas d'entreprise.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" class="section" style="background: var(--bg-2);">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Galerie gourmande</span>
+      <span class="signature">les couleurs d'Atlantis</span>
+      <h2 class="section-title">Les couleurs de <em>nos saveurs</em></h2>
+    </div>
+    <div class="gallery reveal">
+      <div class="g" style="background-image:url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAEFv9DciYdbgeroz62TBl7inFya3yPEfBC45qqO2mAqyowwot56LzWH8-9bz83Im9xSQTmXf5B7t2q2DTgWsXOP04IA-tZyaLG8kZDGoTpI6sXv-kNk0K5Ovq3hPJj0GtWxiKq0=s1360-w1360-h1020');"></div>
+      <div class="g" style="background-image:url('https://lh3.googleusercontent.com/p/AF1QipOFZswZxVkUAN2fEAt7PxJt0orxBT6_Yc3MVryy=s1360-w1360-h1020');"></div>
+      <div class="g" style="background-image:url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAGPjEd-xwGRl8qvMdOSXg00dvGLIEs1quvvPUsUVVcZ40gOaa87FCW3ublZB1CzmR88nZ-pUeQqp0bu1rZmxWKpY0SacMrU15xpdSoYfv-LjpDt6-QX75gtQhTBg9v60eqpY0jqgNiPBqQ=s1360-w1360-h1020');"></div>
+      <div class="g" style="background-image:url('https://lh3.googleusercontent.com/p/AF1QipOGDh3SvsJq2cPCHaPDb1FCcd5RfEcoRrq4CGHo=s1360-w1360-h1020');"></div>
+      <div class="g" style="background-image:url('https://lh3.googleusercontent.com/gps-cs-s/APNQkAHqSwBJYaa9qqkBEjdRe93BZ3GZYWNLLgnGPG-hV23YDEXiHlNAiJHexLtx-sjnAeYCVWXQQ3BOv-nrkvwu6oul4-sg4SwFg52B79XoU48LVWT3zUDkcuALN5PasAlZBohTb64=s1360-w1360-h1020');"></div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews" class="section">
+  <div class="caustics"><span class="blob b2"></span></div>
+  <div class="container" style="position:relative;">
+    <div class="section-head reveal">
+      <span class="eyebrow">Avis clients</span>
+      <span class="signature">nos habitués racontent</span>
+      <h2 class="section-title">Ce que disent <em>nos habitués</em></h2>
+    </div>
+    <div class="reviews reveal">
+      <div class="review">
+        <div class="stars">★★★★★</div>
+        <p>« On y va en famille régulièrement. Les sushis sont toujours frais, le buffet est vraiment généreux. Les enfants adorent et les adultes aussi. »</p>
+        <div class="who"><div class="avatar">M</div><div><div class="n">Marie-Béatrice L.</div><div class="s">Avis vérifié</div></div></div>
+      </div>
+      <div class="review">
+        <div class="stars">★★★★★</div>
+        <p>« Repas d'anniversaire pour mes 40 ans avec 15 personnes. Tout était parfait : accueil chaleureux, plats délicieux, wok préparé en direct. La meilleure adresse de Noyon. »</p>
+        <div class="who"><div class="avatar">T</div><div><div class="n">Thomas R.</div><div class="s">Avis vérifié</div></div></div>
+      </div>
+      <div class="review">
+        <div class="stars">★★★★☆</div>
+        <p>« Un très bon restaurant avec un buffet impressionnant. Rapport qualité-prix excellent. Les dim sum vapeur et les brochettes grillées sont mes favoris. »</p>
+        <div class="who"><div class="avatar">S</div><div><div class="n">Sophie C.</div><div class="s">Avis vérifié</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESERVATION -->
+<section id="reservation" class="section">
+  <div class="container">
+    <div class="resa-card reveal">
+      <span class="signature">on vous attend</span>
+      <h2>Réservez votre <em style="font-style:italic; background: var(--gradient-aurora); -webkit-background-clip:text; background-clip:text; color:transparent;">table</em></h2>
+      <p style="margin-top:1rem; color:var(--muted); max-width:520px; margin-left:auto; margin-right:auto;">Une table pour 2 ou un grand repas de famille ? Appelez-nous, nous nous occupons de tout.</p>
+      <div class="hero-actions" style="margin-top:2.5rem; justify-content:center;">
+        <a href="tel:0344962183" class="btn-primary">03 44 96 21 83</a>
+        <a href="https://maps.google.com/?q=Atlantis+Noyon+ZAC+du+mont+renaud" target="_blank" rel="noopener" class="btn-ghost">Itinéraire</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-grid">
+    <div class="col">
+      <div class="foot-logo">
+        <span class="dot" style="width:36px;height:36px;border-radius:50%;background:var(--gradient-aurora);box-shadow:var(--shadow-glow);display:flex;align-items:center;justify-content:center;color:var(--deep);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></svg>
+        </span>
+        <span class="name">Atlantis</span>
+      </div>
+      <p>Restaurant asiatique convivial à Noyon. Buffet, sushis, wok et grillades.</p>
+    </div>
+    <div class="col">
+      <h3>Adresse</h3>
+      <p>ZAC du mont renaud<br/>Av. Simone de Beauvoir<br/>60400 Noyon</p>
+    </div>
+    <div class="col">
+      <h3>Contact</h3>
+      <p><a href="tel:0344962183">03 44 96 21 83</a></p>
+      <p>Lun – Dim<br/>11h30 – 14h30<br/>18h30 – 22h30</p>
+    </div>
+    <div class="col">
+      <h3>Nous trouver</h3>
+      <div class="map-wrap">
+        <iframe title="Carte Atlantis Noyon" loading="lazy" src="https://www.google.com/maps?q=ZAC+du+mont+renaud+Avenue+Simone+de+Beauvoir+60400+Noyon&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
+  <div class="copy">© <span id="year"></span> <span class="signature">Atlantis</span> Noyon — Restaurant asiatique. Tous droits réservés.</div>
+</footer>
+
+<script>
+  // Année dynamique
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Nav scroll effect
+  const nav = document.querySelector('header.nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 30) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  });
+
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Parallax léger sur le hero
+  const heroImg = document.querySelector('#hero .hero-img');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y < window.innerHeight) {
+      heroImg.style.transform = `translateY(${y * 0.3}px)`;
+    }
+  });
+</script>
+
+</body>
+</html>
